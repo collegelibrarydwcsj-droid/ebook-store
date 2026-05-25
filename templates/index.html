@@ -1,1 +1,197 @@
+<!-- templates/index.html -->
+<!-- This is the actual PAGE that people see. The Python file (app.py)
+     decides WHAT to show; this file decides HOW it looks. -->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site_title }}</title>
+
+  <!-- A nice display font for the title, loaded from Google Fonts. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Colors in one place. Change these to recolor the whole site. --- */
+    :root {
+      --navy-deep: #0f2447;     /* darkest navy, used for the top bar */
+      --navy: #1b3a6b;          /* main dark blue */
+      --navy-soft: #f0f3f9;     /* very light blue-grey page background */
+      --ink: #1c2433;           /* main text color */
+      --muted: #6b7689;         /* lighter text for authors */
+      --line: #e3e8f0;          /* thin border color */
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--navy-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* --- The top bar with the site name --- */
+    header {
+      background: var(--navy-deep);
+      color: var(--white);
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-dot {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: var(--white);
+      color: var(--navy-deep);
+      display: grid; place-items: center;
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    header h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+    }
+
+    /* --- The section heading above the grid --- */
+    .bar {
+      max-width: 1080px;
+      margin: 36px auto 0;
+      padding: 0 24px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    .bar h2 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 26px;
+      color: var(--navy);
+    }
+    .bar span { color: var(--muted); font-size: 14px; }
+
+    /* --- The grid of book cards --- */
+    .grid {
+      max-width: 1080px;
+      margin: 22px auto 60px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 26px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 30px rgba(15, 36, 71, 0.16);
+    }
+
+    /* The fake book cover: a colored block with the title on it.
+       Later, a real cover image will replace this. */
+    .cover {
+      aspect-ratio: 3 / 4;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .cover span {
+      font-family: 'Fraunces', serif;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .info { padding: 14px 16px 18px; }
+    .info .title {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .info .author { color: var(--muted); font-size: 13px; }
+
+    .row {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .price { font-weight: 600; color: var(--navy); font-size: 15px; }
+    .btn {
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:hover { background: var(--navy-deep); }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 30px 24px 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-dot">D</div>
+    <h1>{{ site_title }}</h1>
+  </header>
+
+  <div class="bar">
+    <h2>Browse E-Books</h2>
+    <span>{{ books|length }} titles available</span>
+  </div>
+
+  <div class="grid">
+    <!-- The "for" line below repeats this card for every book.
+         The lines wrapped in percent-brace are instructions for Flask,
+         and the double-brace prints a value onto the page. -->
+    {% for book in books %}
+      <div class="card">
+        <div class="cover" style="background: {{ book.cover_color }};">
+          <span>{{ book.title }}</span>
+        </div>
+        <div class="info">
+          <div class="title">{{ book.title }}</div>
+          <div class="author">by {{ book.author }}</div>
+          <div class="row">
+            <span class="price">&#8369;{{ book.price }}</span>
+            <button class="btn">Preview</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <footer>
+    Divine Word College of San Jose &middot; E-Resources Library
+  </footer>
+</body>
+</html>
