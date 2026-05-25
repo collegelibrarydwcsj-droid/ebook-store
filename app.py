@@ -6,36 +6,34 @@
 # makes it easy to build a website with Python.
 
 # --- 1. Bring in the tools we need ---
-# "Flask" builds the website. "render_template" lets us show an HTML page.
 from flask import Flask, render_template
 
 # --- 2. Create the app ---
-# This line creates your website. We'll call it "app" from now on.
 app = Flask(__name__)
 
-# --- 3. Your books ---
-# For now, the books are just typed in here by hand (this is the
-# "hardcoded" part we talked about). Later, these will come from a
-# real database that you fill using your admin panel.
-#
-# Each book is a little bundle of info: a title, an author, and a price.
+# --- 3. The name of your site (shown at the top of the page) ---
+SITE_TITLE = "Divine Word College of San Jose E-Resources"
+
+# --- 4. Your books ---
+# Still typed in by hand for now. Later these come from your database.
+# Each book now also has a "cover_color". Since we don't have real
+# cover images yet, we draw a colored rectangle with the title on it.
+# When you add real cover images later, we'll swap this out.
 books = [
-    {"title": "How to Sell Ebooks", "author": "Juan dela Cruz", "price": 199},
-    {"title": "Cooking for Beginners", "author": "Maria Santos", "price": 149},
-    {"title": "Learn Python Fast", "author": "Jose Rizal", "price": 249},
+    {"title": "How to Sell Ebooks", "author": "Juan dela Cruz", "price": 199, "cover_color": "#1b3a6b"},
+    {"title": "Cooking for Beginners", "author": "Maria Santos", "price": 149, "cover_color": "#274d8a"},
+    {"title": "Learn Python Fast", "author": "Jose Rizal", "price": 249, "cover_color": "#16294d"},
+    {"title": "World History Basics", "author": "Andres Bonifacio", "price": 179, "cover_color": "#2f5aa0"},
+    {"title": "Intro to Accounting", "author": "Apolinario Mabini", "price": 209, "cover_color": "#1b3a6b"},
+    {"title": "English Grammar Guide", "author": "Gabriela Silang", "price": 159, "cover_color": "#274d8a"},
 ]
 
-# --- 4. The home page ---
-# This says: "when someone visits the main page of the website ('/'),
-# run the function below."
+# --- 5. The home page ---
 @app.route("/")
 def home():
-    # We hand our list of books to the HTML page called "index.html".
-    # The page will loop through them and show each one.
-    return render_template("index.html", books=books)
+    # We hand the title and the book list to the page.
+    return render_template("index.html", site_title=SITE_TITLE, books=books)
 
-# --- 5. Start the website ---
-# This line actually turns the website on when you run this file.
-# debug=True means it will show helpful error messages while you learn.
+# --- 6. Start the website ---
 if __name__ == "__main__":
     app.run(debug=True)
