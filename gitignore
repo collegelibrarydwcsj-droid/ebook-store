@@ -1,0 +1,30 @@
+# .gitignore
+# This file tells Git which things to NEVER upload to GitHub.
+# Anything listed here stays only on your own computer.
+
+# --- Secrets (most important) ---
+# Later you'll keep passwords, email logins, and payment keys in a
+# file like this. It must never go to GitHub.
+.env
+*.key
+secrets.py
+
+# --- Your database ---
+# When you add the database in step 2, it creates a file like this.
+# It holds your real data and shouldn't be uploaded.
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Uploaded books ---
+# The actual PDF files your admin panel will accept don't belong
+# in your code repo (they can be large and aren't code).
+uploads/
+*.pdf
+
+# --- Python clutter ---
+# Python auto-generates these; nobody needs them on GitHub.
+__pycache__/
+*.pyc
+venv/
+.venv/
